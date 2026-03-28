@@ -4,6 +4,7 @@ import logging
 import json
 from datetime import datetime, time
 from aiogram import Bot
+from config import APP_TIMEZONE
 from database.session import get_db_session
 from database.models import User, Supplement
 
@@ -19,6 +20,10 @@ class NotificationScheduler:
         self.sent_notifications_today = set()  # Для предотвращения дублирования уведомлений
         self._last_check_date = None  # Дата последней проверки для сброса кэша
         
+    def _now(self) -> datetime:
+        """Возвращает текущее время в часовом поясе приложения."""
+        return datetime.now(APP_TIMEZONE)
+
     async def send_notification(self, user_id: str, message: str):
         """Отправляет уведомление пользователю."""
         try:
@@ -51,8 +56,8 @@ class NotificationScheduler:
     
     def calculate_next_time(self, target_time: time) -> float:
         """Вычисляет время до следующего указанного времени в секундах."""
-        now = datetime.now()
-        target_datetime = datetime.combine(now.date(), target_time)
+        now = self._now()
+        target_datetime = datetime.combine(now.date(), target_time, tzinfo=APP_TIMEZONE)
         
         # Если время уже прошло сегодня, планируем на завтра
         if now.time() >= target_time:
@@ -123,7 +128,7 @@ class NotificationScheduler:
     async def check_and_send_supplement_notifications(self):
         """Проверяет добавки и отправляет уведомления, если наступило время приёма."""
         try:
-            now = datetime.now()
+            now = self._now()
             current_time_str = now.strftime("%H:%M")
             current_weekday = self._get_weekday_name(now.weekday())
             today_date = now.date()

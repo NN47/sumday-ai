@@ -1,6 +1,7 @@
 """Конфигурация приложения."""
 import os
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
 
 # Загружаем переменные окружения
@@ -25,6 +26,7 @@ if not NUTRITION_API_KEY:
 
 # Keep-alive сервер
 KEEPALIVE_PORT = 10000
+APP_TIMEZONE = ZoneInfo("Europe/Moscow")
 
 # Настройки БД
 DB_POOL_PRE_PING = True
