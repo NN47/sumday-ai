@@ -201,6 +201,16 @@ async def calories_add(message: Message, state: FSMContext):
     await start_kbju_add_flow(message, date.today(), state)
 
 
+@router.message(lambda m: m.text == "➕ Добавить (тестовый)")
+async def calories_add_test_stub(message: Message):
+    """Временная заглушка для тестовой кнопки добавления в КБЖУ."""
+    await message.answer(
+        "🧪 Кнопка «Добавить (тестовый)» пока работает как заглушка.\n"
+        "Скоро здесь появится отдельный сценарий добавления.",
+        reply_markup=kbju_menu,
+    )
+
+
 async def start_kbju_add_flow(message: Message, entry_date: date, state: FSMContext):
     """Запускает поток добавления приёма пищи."""
     user_id = str(message.from_user.id)

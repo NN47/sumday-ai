@@ -192,6 +192,7 @@ weighted_exercise_menu = ReplyKeyboardMarkup(
 kbju_menu = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="➕ Добавить")],
+        [KeyboardButton(text="➕ Добавить (тестовый)")],
         [KeyboardButton(text="📊 Дневной отчёт"), KeyboardButton(text="📆 Календарь КБЖУ")],
         [KeyboardButton(text="🎯 Цель / Норма КБЖУ")],
         [main_menu_button],
